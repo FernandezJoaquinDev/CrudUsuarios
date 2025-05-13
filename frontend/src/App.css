@@ -1,0 +1,19 @@
+.contenedor-mayor{
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr auto;
+    background-color: rgb(51, 68, 68);
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    width: 50vw;
+    min-height: 30vw;
+    height: auto;
+}
+
