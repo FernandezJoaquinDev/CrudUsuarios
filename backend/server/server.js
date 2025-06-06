@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const usuariosRoutes = require("../routes/usuariosRoutes");
+const autenticationRoute = require("../routes/autenticationRoutes");
 class Server {
   constructor() {
     this.app = express();
@@ -9,6 +10,7 @@ class Server {
     this.middlewares();
     this.paths = {
       usuarios: "/api/usuarios",
+      autentication: "/api/autentication",
     };
     this.conectarBD();
     this.routes();
@@ -23,6 +25,7 @@ class Server {
   }
   routes() {
     this.app.use(this.paths.usuarios, usuariosRoutes);
+    this.app.use(this.paths.autentication, autenticationRoute);
   }
   listen() {
     this.app.listen(this.port, () => {

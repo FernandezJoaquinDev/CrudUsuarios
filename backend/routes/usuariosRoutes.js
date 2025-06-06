@@ -11,6 +11,8 @@ const {
 } = require("../controllers/usuarioController");
 
 const { validarRol, validarId } = require("../helpers/db-validator");
+const validarAdmin = require("../middlewares/validarAdmin");
+const validarToken = require("../middlewares/validarToken");
 
 router.get("/", obtenerUsuarios);
 
@@ -45,6 +47,8 @@ router.put(
 router.delete(
   "/:id",
   [
+    validarToken,
+    validarAdmin,
     check("id", "El formato del id es invalido").isMongoId(),
     check("id", "El id no corresponde a ningun usuario registrado").custom(
       validarId
