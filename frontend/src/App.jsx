@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import CrearUsuario from "./pages/crearUsuario";
+import CrearUsuario from "./pages/CrearUsuario";
 import ListaUsuarios from "./pages/ListaUsuarios";
 
 function App() {

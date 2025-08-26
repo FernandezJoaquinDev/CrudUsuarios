@@ -13,18 +13,19 @@ const CrearUsuario = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setForm({ ...form, dni: Number(form.dni) });
+    //setForm({ ...form, dni: Number(form.dni) });
     const res = await fetch("http://localhost:5000/api/usuarios", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(form),
     });
-    if (!res.ok) {
-      throw new Error("error al crear usuario");
-    }
-
     const data = await res.json();
-    console.log("usuario creado", data);
+     if (!res.ok) {
+      alert(data.msg);
+      throw new Error(data.msg);
+      
+    }
+    console.log("usuario creado", data.nombre);
     alert("se creo el usuario correctamente");
   };
 

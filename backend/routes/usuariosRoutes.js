@@ -22,11 +22,6 @@ router.post(
     check("nombre", "El nombre es obligatorio").notEmpty(),
     check("dni", "El dni es obligatorio").notEmpty(),
     check("correo", "Formato de correo invalido").isEmail(),
-    check(
-      "contraseña",
-      "La contraseña debe tener un minimo de 5 caracteres"
-    ).isLength({ min: 5 }),
-    check("rol").custom(validarRol),
     validarCampos,
   ],
   crearUsuario
@@ -47,8 +42,8 @@ router.put(
 router.delete(
   "/:id",
   [
-    validarToken,
-    validarAdmin,
+    //validarToken,
+    //validarAdmin,
     check("id", "El formato del id es invalido").isMongoId(),
     check("id", "El id no corresponde a ningun usuario registrado").custom(
       validarId

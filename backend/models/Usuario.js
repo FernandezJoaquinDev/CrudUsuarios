@@ -14,14 +14,10 @@ const usuarioSchema = new mongoose.Schema({
     required: [true, "El correo es obligatorio"],
     unique: true,
   },
-  contraseña: {
-    type: String,
-    required: [true, "La contraseña es obligatoria"],
-  },
   rol: {
     type: String,
     default: "USER",
-    required: [true, "el usuario es requerido"],
+    //required: [true, "el usuario es requerido"],
   },
   estado: {
     type: Boolean,
@@ -30,9 +26,8 @@ const usuarioSchema = new mongoose.Schema({
 });
 
 usuarioSchema.methods.toJSON = function () {
-  const { __v, contraseña, rol, dni, _id, estado, ...usuario } = (usuario.uid =
-    _id);
-  this.toObject();
+  const { __v, _id, ...usuario } = this.toObject();
+  usuario.id = _id;
   return usuario;
 };
 

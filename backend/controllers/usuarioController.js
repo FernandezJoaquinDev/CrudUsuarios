@@ -2,22 +2,28 @@ const Usuario = require("../models/Usuario");
 const bcrypt = require("bcrypt");
 
 const obtenerUsuarios = async (req, res) => {
-  const usuarios = await Usuario.find();
-  res.json(usuarios);
+  try {
+    const usuarios = await Usuario.find();
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json({ msg: "Error al obtener los datos" });
+  }
 };
 
 const crearUsuario = async (req, res) => {
   // const nuevo = new Usuario(req.body);
   try {
-    const { nombre, dni, correo, contraseña, rol } = req.body;
+    const { nombre, dni, correo } = req.body;
     const existeEmail = await Usuario.findOne({ correo });
     if (existeEmail) {
       return res.status(400).json({ msg: "el correo ya esta registrado" });
     }
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(contraseña, salt);
-    const nuevo = new Usuario({ nombre, dni, correo, contraseña: hash, rol });
-
+    const existeDni = await Usuario.findOne({ dni });
+    if (existeDni) {
+      return res.status(400).json({ msg: "el dni ya esta registrado" });
+    }
+    const nuevo = new Usuario({ nombre, dni, correo });
+    //const nuevo = new Usuario(req.body);
     await nuevo.save();
     res.status(201).json(nuevo);
   } catch (error) {
@@ -50,12 +56,15 @@ const borrarUsuario = async (req, res) => {
   if (!encontrado) {
     throw new Error("No se encontro el usuario con ese id");
   }
+  try {
+    await Usuario.findByIdAndUpdate(id, { estado: false });
 
-  await Usuario.findByIdAndUpdate(id, { estado: false });
-
-  res.json({
-    msg: "usuario eliminado",
-  });
+    res.json({
+      msg: "usuario eliminado",
+    });
+  } catch (error) {
+    res.status(400).json({ msg: "Error en el servidor" });
+  }
 };
 
 module.exports = {
