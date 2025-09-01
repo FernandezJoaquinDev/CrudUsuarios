@@ -6,18 +6,20 @@ import { useNavigate } from "react-router-dom";
 
 const ListaUsuarios = () => {
   const [listaUsuarios, setListaUsuarios] = useState([]);
-  const [listaUsuariosFiltrados, setListaUsuariosFiltrados] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [editando, setEditando] = useState(false);
   const navigate = useNavigate();
+
   const eliminarUsuario = async (id) => {
-    let conf = confirm(`Esta seguro de que quiere eliminar el usuario ${id} ?`);
+    let conf = confirm(`Esta seguro de que quiere eliminar el usuario?`);
     if (conf) {
       try {
-        console.log(id);
-        const resp = await fetch(`http://localhost:5000/api/usuarios/${id}`, {
-          method: "DELETE",
-        });
+        const resp = await fetch(
+          `https://crudusuarios-8fll.onrender.com/api/usuarios/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
         const data = await resp.json();
         if (!resp.ok) {
           alert(data.msg);
@@ -39,14 +41,15 @@ const ListaUsuarios = () => {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const resp = await fetch("http://localhost:5000/api/usuarios");
+        const resp = await fetch(
+          "https://crudusuarios-8fll.onrender.com/api/usuarios"
+        );
         const data = await resp.json();
         if (!resp.ok) {
           throw new Error(resp.msg);
         } else {
           setListaUsuarios(data.filter((usuario) => usuario.estado === true));
           setCargando(false);
-          console.log(listaUsuariosFiltrados);
         }
       } catch (error) {
         console.log("error del servidor");

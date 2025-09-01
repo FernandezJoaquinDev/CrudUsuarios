@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+const contraseña = "12345MISS";
 const CrearUsuario = () => {
   const [form, setForm] = useState({
     nombre: "",
@@ -25,19 +25,31 @@ const CrearUsuario = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //setForm({ ...form, dni: Number(form.dni) });
-    const res = await fetch("http://localhost:5000/api/usuarios", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      alert(data.msg);
-      throw new Error(data.msg);
+    const confirmPass = window.prompt("Ingrese la contraseña de administrador");
+    if (confirmPass === contraseña) {
+      const res = await fetch(
+        "https://crudusuarios-8fll.onrender.com/api/usuarios",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.msg);
+        throw new Error(data.msg);
+      }
+      console.log("usuario creado", data.nombre);
+      alert("se creo el usuario correctamente");
+      setForm({
+        nombre: "",
+        dni: "",
+        correo: "",
+      });
+    } else {
+      alert("contraseña incorrecta");
     }
-    console.log("usuario creado", data.nombre);
-    alert("se creo el usuario correctamente");
   };
 
   return (

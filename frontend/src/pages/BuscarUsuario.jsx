@@ -11,6 +11,7 @@ const BuscarUsuario = () => {
     rol: "USER",
   });
   const [estado, setEstado] = useState(false);
+  const contraseña = "999--..";
   const navigate = useNavigate();
 
   const handleChangeDni = (e) => {
@@ -22,7 +23,12 @@ const BuscarUsuario = () => {
   };
 
   const cancelarEdicion = () => {
-    setEncontrado({});
+    setEncontrado({
+      nombre: "",
+      correo: "",
+      estado: false,
+      rol: "USER",
+    });
     navigate("/");
   };
 
@@ -32,16 +38,16 @@ const BuscarUsuario = () => {
         `Realmente desea actualizar la informacion del usuario ${encontrado.nombre}`
       );
       if (conf && encontrado) {
-        console.log(encontrado);
-
         const resp = await fetch(
-          `http://localhost:5000/api/usuarios/${encontrado.id}`,
+          `https://crudusuarios-8fll.onrender.com/api/usuarios/${encontrado.id}`,
           {
             method: "PUT",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(encontrado),
           }
         );
+        const data = await resp.json();
+        alert(data.msg);
         navigate("/");
       } else {
         alert("Se cancelo la actualizacion de datos");
@@ -63,14 +69,22 @@ const BuscarUsuario = () => {
   };
   const handleSearch = async (e) => {
     e.preventDefault();
-    console.log(Number(dniBuscado));
     if (dniBuscado != 0) {
       const resp = await fetch(
-        `http://localhost:5000/api/usuarios/${Number(dniBuscado)}`
+        `https://crudusuarios-8fll.onrender.com/api/usuarios/${Number(
+          dniBuscado
+        )}`
       );
       if (!resp.ok) {
         const errorData = await resp.json();
-        console.log("error del servidor: ", errorData.msg);
+        alert(`error del servidor: ${errorData.msg}`);
+        setDniBuscado("");
+        setEncontrado({
+          nombre: "",
+          correo: "",
+          estado: false,
+          rol: "USER",
+        });
         return;
       }
       const data = await resp.json();
@@ -79,8 +93,7 @@ const BuscarUsuario = () => {
         setEstado(true);
       } else {
         console.log(error);
-      } //controlar el caso de que el usuario no se encuentre
-      console.log(data);
+      }
     } else {
       alert("El dni no puede estar vacio");
     }
