@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const CrearUsuario = () => {
   const [form, setForm] = useState({
@@ -6,9 +8,19 @@ const CrearUsuario = () => {
     dni: "",
     correo: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const volverAtras = () => {
+    setForm({
+      nombre: "",
+      dni: "",
+      correo: "",
+    });
+    navigate("/");
   };
 
   const handleSubmit = async (e) => {
@@ -20,10 +32,9 @@ const CrearUsuario = () => {
       body: JSON.stringify(form),
     });
     const data = await res.json();
-     if (!res.ok) {
+    if (!res.ok) {
       alert(data.msg);
       throw new Error(data.msg);
-      
     }
     console.log("usuario creado", data.nombre);
     alert("se creo el usuario correctamente");
@@ -31,7 +42,12 @@ const CrearUsuario = () => {
 
   return (
     <div className="card shadow p-4">
-      <div className="card-title text-center p-2">
+      <div className="text-start">
+        <button className="btn btn-outline-dark" onClick={volverAtras}>
+          <FaArrowLeft />
+        </button>
+      </div>
+      <div className="card-title text-center p-2 border-bottom border-dark">
         <h3>Crear Usuario</h3>
       </div>
       <div className="card-body d-flex flex-column">

@@ -34,20 +34,32 @@ const crearUsuario = async (req, res) => {
 
 const actualizarUsuario = async (req, res) => {
   const { id } = req.params;
-  const { correo, contraseña, ...resto } = req.body;
-  if (contraseña) {
+  const { correo, nombre, rol, estado, ...resto } = req.body;
+  /*if (contraseña) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(contraseña, salt);
     resto.contraseña = hash;
-  }
+  }*/
   if (correo) {
     resto.correo = correo;
   }
-
-  await Usuario.findByIdAndUpdate(id, resto);
-  res.json({
-    msg: "Usuario actualizado",
-  });
+  if (nombre) {
+    resto.nombre = nombre;
+  }
+  if (rol) {
+    resto.rol = rol;
+  }
+  if (estado) {
+    resto.estado = estado;
+  }
+  try {
+    await Usuario.findByIdAndUpdate(id, resto);
+    res.status(200).json({
+      msg: "Usuario actualizado",
+    });
+  } catch (error) {
+    res.status(400).json({ msg: "error del servidor" });
+  }
 };
 
 const borrarUsuario = async (req, res) => {
@@ -67,9 +79,20 @@ const borrarUsuario = async (req, res) => {
   }
 };
 
+const buscarUsuario = async (req, res) => {
+  const { dni } = req.params;
+  const encontrado = await Usuario.findOne({ dni });
+  if (!encontrado) {
+    res.status(400).json({ msg: "el usuario no fue encontrado" });
+  } else {
+    res.status(200).json(encontrado);
+  }
+};
+
 module.exports = {
   obtenerUsuarios,
   crearUsuario,
   actualizarUsuario,
   borrarUsuario,
+  buscarUsuario,
 };

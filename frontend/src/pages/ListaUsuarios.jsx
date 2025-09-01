@@ -1,13 +1,15 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const ListaUsuarios = () => {
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [listaUsuariosFiltrados, setListaUsuariosFiltrados] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [editando, setEditando] = useState(false);
-
+  const navigate = useNavigate();
   const eliminarUsuario = async (id) => {
     let conf = confirm(`Esta seguro de que quiere eliminar el usuario ${id} ?`);
     if (conf) {
@@ -57,6 +59,11 @@ const ListaUsuarios = () => {
 
   return (
     <div className="card shadow p-4">
+      <div className="text-start">
+        <button className="btn btn-outline-dark" onClick={() => navigate("/")}>
+          <FaArrowLeft />
+        </button>
+      </div>
       <div className="card-title text-center p-2">
         <h3>Lista de Usuarios</h3>
       </div>

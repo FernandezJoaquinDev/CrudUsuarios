@@ -8,11 +8,23 @@ const {
   crearUsuario,
   actualizarUsuario,
   borrarUsuario,
+  buscarUsuario,
 } = require("../controllers/usuarioController");
 
 const { validarRol, validarId } = require("../helpers/db-validator");
 const validarAdmin = require("../middlewares/validarAdmin");
 const validarToken = require("../middlewares/validarToken");
+
+router.get(
+  "/:dni",
+  [
+    check("dni", "El dni debe ser un numero").isNumeric(),
+    check("dni", "El campo no puede estar vacio").notEmpty(),
+    check("dni", "El campo no puede ser cero").not().equals(0),
+    validarCampos,
+  ],
+  buscarUsuario
+);
 
 router.get("/", obtenerUsuarios);
 

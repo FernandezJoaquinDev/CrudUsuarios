@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import CrearUsuario from "./pages/CrearUsuario";
 import ListaUsuarios from "./pages/ListaUsuarios";
+import BuscarUsuario from "./pages/BuscarUsuario";
 
 function App() {
   const [form, setForm] = useState({
@@ -23,7 +24,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/CrearUsuario" element={<CrearUsuario />} />
-            <Route path="/lista" element={<ListaUsuarios />} />
+            <Route path="/listaUsuarios" element={<ListaUsuarios />} />
+            <Route path="/buscarUsuario" element={<BuscarUsuario />} />
           </Routes>
         </div>
         <Footer />
